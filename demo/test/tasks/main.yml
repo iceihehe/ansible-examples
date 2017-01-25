@@ -1,0 +1,23 @@
+---
+
+- name: task 1
+  command: echo task 1
+  notify:
+    - handler 1
+    - handler 2
+    - handler 3
+- meta: flush_handlers
+- name: set var2 1
+  set_fact:
+    var2: 1
+- name: task 2
+  command: echo task 2
+  notify:
+    - handler 4
+- name: set var2 2
+  set_fact:
+    var2: 2
+- name: task 3
+  command: echo task 3
+  notify:
+    - handler 4

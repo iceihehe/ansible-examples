@@ -1,0 +1,6 @@
+---
+
+- hosts: all
+  roles:
+    - role: test
+      var1: var1

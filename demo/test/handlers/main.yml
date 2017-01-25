@@ -1,0 +1,14 @@
+---
+
+- name: handler 1
+  debug:
+    msg: "handler 1"
+- name: handler 2
+  debug:
+    msg: "handler 2"
+- name: handler 3
+  debug:
+    msg: '{{ var1 }}'
+- name: handler 4
+  debug:
+    msg: '{{ var2 }}'
