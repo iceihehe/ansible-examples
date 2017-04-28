@@ -1,0 +1,12 @@
+---
+
+- name: 安装supervisor
+  yum:
+    name: supervisor
+    state: installed
+
+
+- name: 启动supervisor
+  service:
+    name: supervisord
+    state: started

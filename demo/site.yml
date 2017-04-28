@@ -8,3 +8,6 @@
     - role: rabbitmq
     - role: redis
     - role: python
+    - role: nginx
+    - role: supervisord
+    - role: project
