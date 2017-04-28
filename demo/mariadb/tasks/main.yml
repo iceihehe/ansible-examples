@@ -1,6 +1,6 @@
 ---
 
-- name: 复制mariadb repository
+- name: 添加mariadb repository
   copy:
     src: repo-latest
     dest: /etc/yum.repos.d/mariadb.repo

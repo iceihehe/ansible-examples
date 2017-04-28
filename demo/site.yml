@@ -7,3 +7,4 @@
     - role: mariadb
     - role: rabbitmq
     - role: redis
+    - role: python
