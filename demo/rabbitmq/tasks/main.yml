@@ -1,0 +1,47 @@
+---
+
+- name: 复制rabbitmq安装文件
+  copy:
+    src: rabbitmq-server.rpm
+    dest: /tmp/rabbitmq-server.rpm
+
+
+- name: 安装epel-release
+  yum:
+    name: epel-release
+    state: installed
+
+
+- name: 安装erlang
+  yum:
+    name: erlang
+    state: installed
+
+
+- name: 安装rabbitmq
+  yum:
+    name: /tmp/rabbitmq-server.rpm
+    state: present
+
+
+- name: 启动rabbitmq
+  service:
+    name: rabbitmq-server
+    state: started
+
+
+- name: 新建rabbitmq vhost
+  rabbitmq_vhost:
+    name: "{{ vhost_name }}"
+    state: present
+
+
+- name: 新建rabbitmq用户
+  rabbitmq_user:
+    user: "{{ username }}"
+    password: "{{ password }}"
+    vhost: "{{ vhost_name }}"
+    configure_priv: .*
+    read_priv: .*
+    write_priv: .*
+    state: present

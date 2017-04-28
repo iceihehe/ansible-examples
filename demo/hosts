@@ -1,0 +1,2 @@
+localhost ansible_connection=local
+vagrant ansible_host=10.0.2.58 ansible_user=vagrant

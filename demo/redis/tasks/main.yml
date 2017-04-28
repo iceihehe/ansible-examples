@@ -1,0 +1,12 @@
+---
+
+- name: 安装redis
+  yum:
+    name: redis
+    state: installed
+
+
+- name: 启动redis
+  service:
+    name: redis
+    state: started

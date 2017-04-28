@@ -1,5 +1,9 @@
 ---
 
-- hosts: all
+- hosts: vagrant
+  become: true
   roles:
-    - role: test
+    - role: mongodb
+    - role: mariadb
+    - role: rabbitmq
+    - role: redis
