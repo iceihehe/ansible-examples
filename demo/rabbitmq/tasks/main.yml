@@ -6,18 +6,6 @@
     dest: /tmp/rabbitmq-server.rpm
 
 
-- name: 安装epel-release
-  yum:
-    name: epel-release
-    state: installed
-
-
-- name: 安装erlang
-  yum:
-    name: erlang
-    state: installed
-
-
 - name: 安装rabbitmq
   yum:
     name: /tmp/rabbitmq-server.rpm
@@ -32,15 +20,15 @@
 
 - name: 新建rabbitmq vhost
   rabbitmq_vhost:
-    name: "{{ vhost_name }}"
+    name: "{{ amqp_vhostname }}"
     state: present
 
 
 - name: 新建rabbitmq用户
   rabbitmq_user:
-    user: "{{ username }}"
-    password: "{{ password }}"
-    vhost: "{{ vhost_name }}"
+    user: "{{ amqp_username }}"
+    password: "{{ amqp_password }}"
+    vhost: "{{ amqp_vhostname }}"
     configure_priv: .*
     read_priv: .*
     write_priv: .*

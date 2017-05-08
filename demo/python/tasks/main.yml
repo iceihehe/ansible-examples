@@ -1,23 +1,41 @@
 ---
 
 - name: 添加python3.5 repository
-  become: true
   yum:
     name: https://centos7.iuscommunity.org/ius-release.rpm
     validate_certs: no
     state: present
+
+
+- name: 安装python
+  yum:
+    name: python
+    state: present
+
+
 - name: 安装python3.5
-  become: true
   yum:
     name: python35u.x86_64
     state: present
+
+
 - name: 安装python3.5-devel
-  become: true
   yum:
     name: python35u-devel.x86_64
     state: present
-- name: 安装pip
-  become: true
+
+
+- name: 安装python-devel
   yum:
-    name: python35u-pip
+    name: python-devel
     state: present
+
+
+- name: 复制get-pip文件
+  copy:
+    src: get-pip.py
+    dest: /tmp/get-pip.py
+
+
+- name: 安装pip
+  command: python /tmp/get-pip.py

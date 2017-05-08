@@ -1,0 +1,26 @@
+---
+
+- name: 关闭selinux
+  selinux:
+    state: disabled
+
+
+- name: 安装依赖
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - gcc
+    - MySQL-python.x86_64
+
+
+- name: 安装epel-release
+  yum:
+    name: epel-release
+    state: installed
+
+
+- name: 安装erlang
+  yum:
+    name: erlang
+    state: installed

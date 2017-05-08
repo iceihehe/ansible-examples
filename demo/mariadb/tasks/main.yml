@@ -2,17 +2,54 @@
 
 - name: 添加mariadb repository
   copy:
-    src: repo-latest
+    src: mariadb.repo
     dest: /etc/yum.repos.d/mariadb.repo
 
 
 - name: 安装mariadb
   yum:
-    name: mariadb-server
-    state: installed
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - mariadb-server
+    - mariadb-devel
+
+
+- name: 复制mariadb配置文件
+  copy:
+    src: mysql-config.cnf
+    dest: /etc/my.cnf.d/server.cnf
 
 
 - name: 启动mariadb
   service:
-    name: mariadb
+    name: mysql
     state: started
+
+
+- name: 创建mariadb数据库
+  mysql_db:
+    name: "{{ mysql_database }}"
+    state: present
+
+
+- name: 创建mariadb用户
+  mysql_user:
+    name: "{{ mysql_username }}"
+    password: "{{ mysql_password }}"
+    state: present
+    priv: '{{ mysql_database }}.*:ALL,GRANT'
+
+
+- name: 复制sql文件
+  copy:
+    src: mysql-init.sql
+    dest: /tmp/mysql-init.sql
+
+
+- name: 导入sql文件
+  mysql_db:
+    state: import
+    name: "{{ mysql_database }}"
+    target: /tmp/mysql-init.sql
+

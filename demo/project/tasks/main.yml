@@ -1,0 +1,79 @@
+---
+
+- name: 创建www目录
+  file:
+    path: /var/www
+    state: directory
+    owner: "{{ owner }}"
+    group: "{{ owner }}"
+
+
+- name: 创建项目目录
+  file:
+    path: "/var/www/{{ project_name }}"
+    state: directory
+    owner: "{{ owner }}"
+    group: "{{ owner }}"
+
+
+- name: 复制项目代码
+  unarchive:
+    src: project.tar.gz
+    dest: "/var/www/{{ project_name }}"
+    owner: "{{ owner }}"
+    group: "{{ owner }}"
+
+
+- name: 复制config.py文件
+  template:
+    src: config-py.js
+    dest: "/var/www/{{ project_name }}/app/config.py"
+
+
+- name: 安装virtualenv
+  pip:
+    name: virtualenv
+    extra_args: "-i {{ pip_index }} --trusted-host {{ pip_trusted_host }}"
+
+
+- name: 安装pip依赖
+  become: true
+  pip:
+    requirements: "/var/www/{{ project_name }}/requirements.txt"
+    extra_args: "-i {{ pip_index }} --trusted-host {{ pip_trusted_host }} -I"
+    virtualenv: "{{ venv }}"
+    virtualenv_python: python3.5
+
+
+- name: 复制supervisor配置文件
+  template:
+    src: config-supervisor.js
+    dest: "/etc/supervisord.d/{{ project_name }}.ini"
+
+
+- name: 启动supervisor project
+  supervisorctl:
+    name: "{{ project_name }}"
+    state: restarted
+
+
+- name: 启动supervisor celery
+  supervisorctl:
+    name: "{{ project_name }}_celery"
+    state: restarted
+
+
+- name: 启动supervisor beat
+  supervisorctl:
+    name: "{{ project_name }}_beat"
+    state: restarted
+
+
+- name: 复制nginx配置文件
+  template:
+    src: config-nginx.js
+    dest: "/etc/nginx/conf.d/{{ project_name }}.conf"
+
+
+- name: 重启nginx
+  command: nginx -s reload

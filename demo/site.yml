@@ -3,11 +3,12 @@
 - hosts: vagrant
   become: true
   roles:
-    - role: mongodb
+    - role: common
+    - role: python
     - role: mariadb
+    - role: mongodb
     - role: rabbitmq
     - role: redis
-    - role: python
     - role: nginx
     - role: supervisord
     - role: project
